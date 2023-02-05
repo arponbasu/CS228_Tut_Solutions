@@ -280,7 +280,7 @@ Heuristic: Note that our formula to be proved, $t\Rightarrow u$, is independent 
     22. & $\Sigma\vdash t\Rightarrow u$ & ByCases on (7, 21)\\
 \end{tabular}
 \section{Tutorial 3}
-\section*{Exercise 6.13}
+\subsection*{Exercise 6.13}
 $$\underbrace{p\oplus\ldots\oplus p}_{n}\oplus\underbrace{\lnot p\oplus\ldots\oplus\lnot p}_{k} = \begin{cases}
 \top, n\;\mathrm{odd}, k\;\mathrm{odd}\\
 \bot, n\;\mathrm{even}, k\;\mathrm{even}\\
@@ -288,7 +288,7 @@ p, \;\;n\;\mathrm{odd}, k\;\mathrm{even}\\
 \lnot p, n\;\mathrm{even}, k\;\mathrm{odd}
 \end{cases}$$
 This can be formally established through a joint induction on $n, k$.
-\section*{Exercise 6.16}
+\subsection*{Exercise 6.16}
 \begin{enumerate}[label=(\alph*)]
     \item Let $m\models F\lor G(F)$. If $m\models F$, then $m\models F\lor G(\bot)$. Otherwise, if $m\not\models F$, then we have $(m\models F\Leftrightarrow m\models\bot)$, which implies, by Theorem 6.1, that $(m\models G(F)\Leftrightarrow m\models G(\bot))$. However, since $m\models F\lor G(F)$ yet $m\not\models F$, we have $m\models G(F)$, and consequently, $m\models G(\bot)$, further implying that $m\models F\lor G(\bot)$.\\
     Thus $m\models F\lor G(F)\Rightarrow m\models F\lor G(\bot)$.\\
@@ -297,17 +297,14 @@ This can be formally established through a joint induction on $n, k$.
     \item Follows similarly as above.
     \item Follows similarly as above.
 \end{enumerate}
-\section*{Exercise 7.12}
+\subsection*{Exercise 7.12}
 The flaw with the argument is that it assumes that the Tseitin encoding preserves validity, which is not the case. Indeed, consider 
 $$F := (p_1\wedge p_2)\lor(\lnot p_1\wedge p_2)\lor(p_1\wedge \lnot p_2)\lor(\lnot p_1\wedge \lnot p_2)$$
 Then $F$ is valid. However, 
 $$\mathrm{Tseitin}(F) = (q_1\lor q_2\lor q_3\lor q_4)\wedge (\lnot q_1\lor p_1)\wedge (\lnot q_1\lor p_2)\wedge (\lnot q_2\lor \lnot p_1)\wedge (\lnot q_2\lor p_2)$$
 $$\wedge (\lnot q_3\lor p_1)\wedge (\lnot q_3\lor \lnot p_2)\wedge (\lnot q_4\lor \lnot p_1)\wedge (\lnot q_4\lor \lnot p_2)$$
 is not valid, as is demonstrated by the model which assigns all the $q_i$s to $0$.\\
-% \textbf{Challenge:-} Consider a formula $F$ containing $n$ variables. Define the degree of satisfiability of a formula to be the number of models on $\Vars(F)$ satisfying $F$, divided by $2^n$, ie:- 
-% $$\mu(F) := \frac{\left|\{m|_{\Vars(F)}: m\models F\}\right|}{2^{|\Vars(F)|}}$$
-% Prove that $\mu(F)/2\leq\mu(\mathrm{Tseitin}(F))\leq\mu(F)$.
-\section*{Exercise 7.20}
+\subsection*{Exercise 7.20}
 We want to show that if $\Sigma$ is unsatisfiable, then we can derive $\bot$ from $\Sigma$ without involving valid clauses in the derivation. We shall assume that $\Sigma$ is finite, and consequently, we can then induct on the number of propositional variables in $\Sigma$, ie:- $n:= \left|\bigcup_{F\in\Sigma}\Vars(F)\right|$, to prove our assertion.\\
 If $n = 1$, then $\Sigma$ contains only one propositional variable, say $p$. Since $\Sigma$ is unsatisfiable it must contain both $\{p\}$ and $\{\lnot p\}$, and then we derive $\bot$ without involving $p\lor\lnot p = \{p, \lnot p\}$.\\
 Let the above assertion be true for any $\Sigma$ containing at most $n$ variables in it, and consider any $\Sigma$ with $\bigcup_{F\in\Sigma}\Vars(F) = \{p, p_1, \ldots, p_n\}$. Partition $\Sigma$ into 4 sets: $\Sigma_0, \Sigma_1, \Sigma_*, \Sigma_{\mathrm{valid}}$, where 
@@ -319,23 +316,72 @@ We further define
 $$\Sigma'_0 := \{F\setminus\{p\}: F\in\Sigma_0\}$$
 $$\Sigma'_1 := \{F\setminus\{\lnot p\}: F\in\Sigma_1\}$$
 Note that since $\Sigma$ is unsatisfiable, so is $\Sigma_0'\cup\Sigma_*$ \footnote{Note that $\mathcal{T}_1\cup\mathcal{T}_2 \equiv \mathcal{T}_1\bigwedge\mathcal{T}_2$ for any two CNFs $\mathcal{T}_1, \mathcal{T}_2$}. Indeed, if $m\models\Sigma_0'\cup\Sigma_*$, then $m[p\rightarrow 0]\models\Sigma$. Similarly, one can see that $\Sigma'_1\cup\Sigma_*$ is unsatisfiable too. Further note that $\Sigma'_i\cup\Sigma_*, i\in\{0, 1\}$ have at most $n$ variables, and thus have a resolution proof for $\bot$ \emph{without involving valid clauses}, by the induction hypothesis. Now, if either of the proofs $\Sigma'_i\cup\Sigma_*\vdash\bot$ uses clauses only from $\Sigma_*$, then we're done by the induction hypothesis. Otherwise adjoin $p$ or $\lnot p$ to clauses in $\Sigma'_0$ and $\Sigma'_1$ respectively \footnote{Note that adjoining $p$ to a clause in $\Sigma'_0$ doesn't make it valid: Indeed, if validity were to be introduced by the variable $p$, then one would have to adjoin both $p$ and $\lnot p$. Thus our proof $\Sigma_0\cup\Sigma_*\vdash\bot$ remains free of valid clauses after the adjoining process.} to obtain $\Sigma_0\cup\Sigma_*\vdash\{p\}$, $\Sigma_1\cup\Sigma_*\vdash\{\lnot p\}$, and then finally resolve $\{p\}, \{\lnot p\}$ to get $\bot$. Note that we did not involve any clause from $\Sigma_{\mathrm{valid}}$ in this step, and we can be sure that no valid clause was invoked anywhere else in the proof by the induction hypothesis. Consequently, we have our desired proof of $\Sigma\vdash\bot$ without valid clauses.
-\section*{Exercise 8.3}
+\subsection*{Exercise 8.3}
 We use induction on $n$. For $n = 1$, as we observed in the earlier question, we can resolve $\Sigma$ in at most $1\leq 2^{1+1}-1$ steps. For any $\Sigma$ with $n$ variables, as above, we can derive $\bot$ from $\Sigma'_i\cup\Sigma_*$ in at most $2^{(n-1)+1}-1 = 2^n - 1$ steps. If any of these proofs use clauses only from $\Sigma_*$, then we're done in $2^{n} - 1\leq 2^{n+1} - 1$ steps. Otherwise, adjoin $p, \lnot p$ to these proofs, and resolve $p, \lnot p$ in the final step to get a derivation of at most $2\cdot (2^n - 1) + 1 = 2^{n+1} - 1$ steps, as desired.
-\section*{Exercise 8.8}
+\subsection*{Exercise 8.8}
 Note that if $\ell = p$, then $F|_\ell = F'_1\cup F_*$, and if $\ell = \lnot p$, then $F|_\ell = F'_0\cup F_*$. \\
 \begin{enumerate}
     \item If $F|_\ell\vdash\bot$ then we either have $F_*\vdash\bot$, in which case we're done since $F_*\subseteq F\subseteq F\cup\{\ell\}$, or we have $F\vdash\{\overline{\ell}\}$, as in Exercise 7.20. Consequently, $F\wedge\ell\vdash\bot$, where we derive $\overline{\ell}$ from $F$ and then resolve it using $\ell$. 
     \item For convenience assume $\ell = p$ for some propositional variable $p$ \footnote{the proof goes through exactly the same way if $\ell = \lnot p$}. Consider the slimmest derivation $F|_\ell\vdash\bot$ with width $w_1$. Note that if this proof uses clauses only from $F_*$, then we don't proceed further. Otherwise, when we adjoin $\overline{\ell}$ to obtain the derivation $F\vdash\overline{\ell}$, the width becomes atmost $1 + w_1$. Having obtained $\overline{\ell}$, resolve it with every clause in $F_0$ to obtain $F|_{\overline{\ell}}$, and let the width of the derivation $F_0\vdash F|_{\overline{\ell}}$ be $w_2$. Finally, derive $\bot$ from $F|_{\overline{\ell}}$ in width $w_3$ in the slimmest possible manner.\\
     Consequently, the width of the entire proof described above is at most $\max(1 + w_1, w_2, w_3)$. Now, $w_3\leq k$ by the problem hypothesis. Also, $w_1\leq k - 1\Rightarrow 1 + w_1\leq k$, once again, by the problem hypothesis. Finally, note that $w_2 = 1 + \mathrm{width}(F_0) = 1 + \mathrm{width}(F) - 1 \leq k$, and thus $\max(1 + w_1, w_2, w_3)\leq k$, as desired.
 \end{enumerate}
-
-% \section*{Exercise 9.11}
-% Note that the truth value of a clause changes only within the \texttt{while} loop. Furthermore, once it changes (to true), it doesn't change anymore. From this, it's not hard to see that the truth value of a clause can change at most twice in our algorithm, ie:- suppose our clause starts being true, then becomes false due to some variable change, and then is finally made true again when the loop visits it, ie:- we have a $1\rightarrow 0\rightarrow 1$ change. This is demonstrated by the run of the algorithm on the clauses $\{p_1\Rightarrow p_2, \top\Rightarrow p_1\}$. $p_1\Rightarrow p_2$ starts off being true, when we have $m[p_1\rightarrow 0, p_2\rightarrow 0]$, it then becomes false when we set $p_1$ to 1, and then it becomes true again when we set $p_2$ to 1.
-% \section*{Exercise 9.15}
-% From the 2-SAT algorithm, we know that if our instance is unsatisfiable, then there exists an SCC of our implication graph which contains both $p, \lnot p$ for some propositional variable $p$. Furthermore, from an algorithmic point of view, such an SCC can be detected during the run of the 2-SAT algorithm itself, ie:- when we encounter a component to whom we can't assign a value consistently.\\
-% % Now, take that SCC and find out (in linear time) an offending variable $p$. Then using any standard graph search algorithm, find out paths from $p$ to $\lnot p$, and then round back from $\lnot p$ to $p$.\\
-% % We claim that the clauses represented by the edges of this $p\rightarrow\lnot p\rightarrow p$ cycle form a minimal unsatisfiable core. Indeed, unsatisfiability follows since their implication graph contains $p, \lnot p$ in the same SCC. Moreover, these set of clauses are minimal too, since removing any clause from these clauses corresponds to deleting an edge in our $p\rightarrow\lnot p\rightarrow p$ cycle, and note that that creates a directed path graph, all of whose SCCs are singletons, and thus are satisfiable.\\
-% % Note that the algorithm above is linear, ie:- for a 2-SAT instance with $n$ variables and $m$ clauses it takes $\mathcal{O}(m + n)$ time. 
-% Now, take that SCC, and find out all variables $\{p_i\}$ in it such that their negations are also present in that SCC. Now, for every such $p_i$, find out a shortest path from $p_i$ to $\lnot p_i$, and then find a shortest path from $\lnot p_i$ to $p_i$. Then find a propositional variable (say $p_0$) from $\{p_i\}$ such that $\mathrm{length}(p_0\rightarrow\lnot p_0) + \mathrm{length}(\lnot p_0\rightarrow p_0)$ is the minimum among all the variables in $\{p_i\}$.\\
-% We claim that the clauses represented by the edges of the $p_0\rightarrow\lnot p_0\rightarrow p_0$ path form a minimal unsatisfiable core. Indeed, unsatisfiability follows since their implication graph contains $p_0, \lnot p_0$ in the same SCC. For minimality note that once we delete any edge from the $p_0\rightarrow\lnot p_0\rightarrow p_0$ path, $p_0, \lnot p_0$ don't remain strongly connected anymore. Further, no other variable $q$ is connected to its negation in the clipped $p_0\rightarrow\lnot p_0\rightarrow p_0$ path since that would contradict the minimality of its length. Consequently, the clipped $p_0\rightarrow\lnot p_0\rightarrow p_0$ path is satisfiable, demonstrating minimality.
+\section{Tutorial 4}
+\subsection*{Exercise 10.8}
+DIY
+\subsection*{Exercise 10.10}
+From the 2-SAT algorithm, we know that if our instance is unsatisfiable, then there exists an SCC of our implication graph which contains both $p, \lnot p$ for some propositional variable $p$. Furthermore, from an algorithmic point of view, such an SCC can be detected during the run of the 2-SAT algorithm itself, ie:- when we encounter a component to whom we can't assign a value consistently.\\
+Now, take that SCC, and find out all variables $\{p_i\}$ in it such that their negations are also present in that SCC. Now, for every such $p_i$, find out a shortest path from $p_i$ to $\lnot p_i$, and then find a shortest path from $\lnot p_i$ to $p_i$. Then find a propositional variable (say $p_0$) from $\{p_i\}$ such that $\mathrm{length}(p_0\rightarrow\lnot p_0) + \mathrm{length}(\lnot p_0\rightarrow p_0)$ is the minimum among all the variables in $\{p_i\}$.\\
+We claim that the clauses represented by the edges of the $p_0\rightarrow\lnot p_0\rightarrow p_0$ path form a minimal unsatisfiable core. Indeed, unsatisfiability follows since their implication graph contains $p_0, \lnot p_0$ in the same SCC. For minimality note that once we delete any edge from the $p_0\rightarrow\lnot p_0\rightarrow p_0$ path, $p_0, \lnot p_0$ don't remain strongly connected anymore. Further, no other variable $q$ is connected to its negation in the clipped $p_0\rightarrow\lnot p_0\rightarrow p_0$ path since that would contradict the minimality of its length. Consequently, the clipped $p_0\rightarrow\lnot p_0\rightarrow p_0$ path is satisfiable, demonstrating minimality.
+\subsection*{Exercise 11.8}
+Refer to \autoref{cdcl} (Credits to Shantanu Nene for this image).
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=1]{CDCL_run.PNG}
+	\caption{Exercise 11.8}
+    \label{cdcl}
+\end{figure}
+\subsection*{Exercise 11.9}
+Given any formula $F$, note that no run of the CDCL algorithm repeats a (partial) model twice, because for any partial model $m$, if $m\models F$ then the algorithm terminates, and if $m\not\models F$, then we have a conflict after performing unit propagation from $m$, following which CDCL learns a clause which thereon prevents it from repeating the model $m$. Consequently, due to the finiteness of the number of partial models on $\Vars(F)$, CDCL on $F$ must terminate.
+% \section{Exercise 11.10}
+% Read the first 7 pages of this \href{https://pure.tue.nl/ws/files/1766943/200207.pdf}{paper}.
+\section{Tutorial 5}
+Throughout this tutorial we shall use the shorthand notation $[x], x\in\mathbb{N}$ to denote the set $\{1, 2, \ldots, x\}$.
+\subsection*{Exercise 12.9}
+Let $p_{ij}$ denote if we have a queen on the square $(i, j)$, where $i, j\in [n]$. Then our SAT encoding is
+$$\underbrace{\sum_{i = 1}^n\sum_{j = 1}^n p_{ij} = n}_{\text{We have $n$ queens}}$$
+$$\bigwedge_{\text{$(i, j)$ and $(i', j')$ attack each other}} p_{ij}\Rightarrow\lnot p_{i'j'}$$
+Note that $(i, j)$ and $(i', j')$ attack each other if and only if at least one of the following conditions hold:-
+\begin{enumerate}
+    \item $i = i'$
+    \item $j = j'$
+    \item $i + j = i' + j'$
+    \item $i - j = i' - j'$
+\end{enumerate}
+\subsection*{Exercise 12.11}
+Suppose we have $\ell$ sets $\{S_i\}_{i\in[\ell]}$ such that $S_i\subseteq[n]$ and $|S_i| = k$ for every $i\in [\ell]$. Further, we also have $|S_i\cap S_j| = 1$ for all distinct $i, j\in[\ell]$.\\
+Consider the propositional variables $\{p_{ij}\}_{i\in [n], j\in [\ell]}$, where $p_{ij}$ is true if $i\in S_j$. Then the constraints of our problem dictate 
+$$F_\ell := \underbrace{\bigwedge_{j\in [\ell]}\left(\sum_{i\in[n]}p_{ij} = k\right)}_{\text{Every set has size $k$}}\wedge\underbrace{\bigwedge_{1\leq j_1 < j_2 \leq\ell}\left(\sum_{i\in [n]}p_{ij_1}\wedge p_{ij_2} = 1\right)}_{|S_{j_1}\cap S_{j_2}| = 1}$$
+Finally, to encode the maximality of our set family, we write 
+$$G_\ell := F_\ell\wedge\lnot F_{\ell + 1}$$
+$$F := \bigvee_{\ell = 1}^{\binom{n}{k}} G_\ell$$
+Note that we implicitly assume that $\Vars(G_{\ell_1})\cap\Vars(G_{\ell_2}) = \Vars(F_{\ell_1})\cap\Vars(F_{\ell_2}) = \emptyset$ if $\ell_1\neq \ell_2$, ie:- we generate fresh variables every time we generate a different $F_\ell, G_\ell$. In particular, note that the variables of $F_\ell$ in $G_{\ell}$ and the variables of $F_\ell$ in $G_{\ell - 1}$ are distinct. \\
+Now note that exactly one clause in $F$ is positive for a satisfying model of $F$, ie:- if $\ell_0$ is the \textbf{maximum}\footnote{note that we were only asked to find a maximal family. We went ahead and found a maximum one, which is also obviously maximal} size of a pairwise 1-intersecting $k$-family, then $F_{\ell_0}\wedge\lnot F_{\ell_0 + 1}$ is positive, and no other clause is.\\
+Thus a satisfying assignment yields to us the maximum size of the desired family, as well as a possible family itself, which can directly be read off from the values of the propositional variables.
+\subsection*{Exercise 13.7}
+Refer to \autoref{z31}, \autoref{z32}.\\
+Credits to Amit Rajaraman for this code.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{z31.jpeg}
+	\caption{Exercise 13.7}
+    \label{z31}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{z32.jpeg}
+	\caption{Exercise 13.7}
+    \label{z32}
+\end{figure}
+\subsection*{Exercise 13.8}
+Draw a parse tree of the formula, and carry out a standard tree traversal of the parse tree, keeping a count of how many $\lnot$ we have encountered so far. Whenever we reach a leaf, if the number of $\lnot$ seen so far is even, then that leaf occurs positively, otherwise not. A variable $p$ occurs positively iff every leaf corresponding to $p$ occurs positively.
 \end{document}
