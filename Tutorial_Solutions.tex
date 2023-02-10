@@ -384,4 +384,62 @@ Credits to Amit Rajaraman for this code.
 \end{figure}
 \subsection*{Exercise 13.8}
 Draw a parse tree of the formula, and carry out a standard tree traversal of the parse tree, keeping a count of how many $\lnot$ we have encountered so far. Whenever we reach a leaf, if the number of $\lnot$ seen so far is even, then that leaf occurs positively, otherwise not. A variable $p$ occurs positively iff every leaf corresponding to $p$ occurs positively.
+\section{Tutorial 6}
+\subsection*{Exercise 14.6}
+Let $m$ be any model and let $\nu$ be any assignment on $m$. 
+\begin{enumerate}[label=(\alph*)]
+\item If $m, \nu\models \lnot\forall x. P(x)$, then $m, \nu\not\models\forall x. P(x)$, implying there exists a $u\in D_m$ such that $m, \nu[x\rightarrow u]\not\models P(u)$, which further implies that $m, \nu[x\rightarrow u]\models \lnot P(u)$. But then $m, \nu\models\exists x.\lnot P(x)$ by the definition of semantic satisfaction of $\exists$.\\
+Similarly, if $m, \nu\models\exists x.\lnot P(x)$, then there exists a $u\in D_m$ such that $m, \nu[x\rightarrow u]\models \lnot P(u)$. But then $u$ witnesses $m, \nu\models\forall x.P(x)$ being violated, and thus we have $m, \nu\not\models\forall x.P(x)$.
+\item DIY
+\item If $m, \nu\models (\forall x. (P(x) \wedge Q(x)))$ then for any $u\in D_m$ we have $m, \nu[x\rightarrow u]\models P(u)\wedge Q(u)$ which implies $m, \nu[x\rightarrow u]\models P(u)$ and $m, \nu[x\rightarrow u]\models Q(u)$. But then by the semantic definition of satisfaction of $\forall$, we have $m, \nu\models\forall x. P(x)$ and $m, \nu\models\forall x. Q(x)$, implying $m, \nu\models(\forall x. P(x))\wedge(\forall x. Q(x))$.\\
+Conversely, if $m, \nu\models(\forall x. P(x))\wedge(\forall x. Q(x))$, then $m, \nu\models\forall x. P(x)$ and $m, \nu\models\forall x. Q(x)$, which implies that for any $u_p, u_q\in D_m$ we have $m, \nu[x\rightarrow u_p]\models P(u_p)$, $m, \nu[x\rightarrow u_q]\models Q(u_q)$. In particular for any $u\in D_m$, we can choose $u_p = u_q = u$ to obtain that $m, \nu[x\rightarrow u]\models P(u)\wedge Q(u)$, which yields $m, \nu\models\forall x.(P(x)\wedge Q(x))$, as desired.
+\item DIY
+\end{enumerate}
+\subsection*{Exercise 14.11}
+\begin{enumerate}[label=(\alph*)]
+    \item $h(c)$
+    \item $f(h(x), h(y), h(c))$
+    \item $g(x, c)$
+    \item $f(x)$
+\end{enumerate}
+\subsection*{Exercise 14.12}
+Note that for the algorithm we shall treat constant functions as variables. Furthermore, instead of building the parenthesized formula directly, we shall first build the parse tree of the formula, and then generate the formula from it. Then note that the unparenthesized expression is just the DFS traversal (``in-fix'' style) of our parse tree, from which we need to generate the tree, which is a classic well-known algorithm.
+\subsection*{Exercise 15.8}
+Consider the signature $\mathbf{S} := (\{\}, \{</2\})$, and consider the sentence 
+$$F:= (\forall x.\lnot(x < x))\wedge(\forall x.\forall y. x < y\Rightarrow\lnot(y < x))\wedge(\forall x.\forall y.\forall z.(x < y)\wedge(y < z)\Rightarrow(x < z))$$
+$$\bigwedge \left(\forall x.\exists y. x < y\right)$$
+on any model of $\mathbf{S}$.\\
+Effectively $F$ ensures that $<$ is a total order on the domain of our model, and then the last clause says that our domain is unbounded, ie:- for every $x$ we have a $y$ greater than $x$. Now, if our model is finite (ie:- has a finite domain), then any total order will necessarily entail a maximum element, and thus $m\not\models F$ for any finite model $m$.\\
+One example of a satisfying (infinite) model is $m_{\mathbb{R}} := (\mathbb{R}; \{\}, \{</2\})$ with the predicate $<$ coinciding with the usual order on $\mathbb{R}$. Also, note that not every infinite model satisfies $F$: For example, $m_{[0, 1]}:= ([0, 1]; \{\}, \{</2\})$, where $<$ is the usual order on $\mathbb{R}$, doesn't satisfy $F$ since it has a maximum element, 1. Thus $m_{[0, 1]}\models\lnot F$.
+\subsection*{Exercise 15.9}
+\begin{enumerate}[label=(\alph*)]
+    \item $F := \forall x.\forall y.\forall z. ((x = y)\lor (y = z)\lor (z = x))$. Clearly if $m\models F$, then $|D_m|\leq 2$.
+    \item If we are forbidden from using $=$, we prove that we can no longer restrict the satisfiability of our sentences to models of size at most 2. We go about this as follows: Take any signature $\mathbf{S}$, and consider any model $m$ on it, such that $0 < |D_m|\leq 2$. Then we construct a model $m'$ on $\mathbf{S}$ such that $|D_{m'}|\geq 3$, and for any sentence $F$, $m\models F\Longleftrightarrow m'\models F$.\\
+    The construction of $m'$ proceeds as follows: WLOG we assume that $D_{m}\subset D_{m'}$ \footnote{note that domains by themselves are just sets with no additional structure}. We choose an arbitrary element $a\in D_m$, and we define a function $\mu: D_{m'}\mapsto D_m$ such that 
+    $$\mu(x) := 
+    \begin{cases}
+        x, \text{if}\; x\in D_m\\
+        a, \text{otherwise}
+    \end{cases}$$
+    Then, for every function $f/n$ in $\mathbf{S}$, we define 
+    $$f_{m'}(x_1, x_2, \ldots, x_n) := f_{m}(\mu(x_1), \mu(x_2), \ldots, \mu(x_n))$$
+    and similarly, for every relation $R/k$ in $\mathbf{S}$ we define
+    $$R_{m'} := \{(\mu(x_1), \mu(x_2), \ldots, \mu(x_k)): (x_1, x_2, \ldots, x_k)\in R_m\} $$
+    % Note that by definition, if $m'\models F$, then $m\models F$. Thus we only have to show that $m\models F\implies m'\models F$. 
+    We proceed by induction: If $F$ doesn't contain any quantifier, then $F$ contains only constants and $0$-ary predicates. By definition, $m$ and $m'$ agree on them. Now, we induct on the maximum depth of the parse tree of $F$. Note that WLOG we can assume that we have only $\exists$ in our sentence: Indeed, wherever we see a $\forall$, we can replace it by $\lnot\exists\lnot$. Similarly, we can assume WLOG that $\wedge, \lnot$ are the only propositional connectives which occur in our sentence. Then, if the root connective of $F$
+    \begin{enumerate}
+        \item Is $\exists$, then $F = \exists x. F_0(x)$. Then $m\models F$, if and only if we have $u\in D_m$ such that $m, \nu[x\mapsto u]\models F_0(u)\Longleftrightarrow m', \nu[x\mapsto u]\models F_0(u)\Longleftrightarrow m'\models\exists x. F_0(x)$, as desired.
+        \item Is $\lnot$ , ie:- $F = \lnot F_0$. Then $m\models \lnot F_0\Longleftrightarrow m\not\models F_0$. By the induction hypothesis, $m'\not\models F_0\Longleftrightarrow m'\models\lnot F_0$, as desired.
+        \item Is $\wedge$, ie:- $F = F_1\wedge F_2$. Then $m\models F_1\wedge F_2\Longleftrightarrow m\models F_1\wedge m\models F_2\Longleftrightarrow m'\models F_1\wedge m'\models F_2$, by the induction hypothesis. But then $m'\models F_1\wedge F_2$, as desired.
+    \end{enumerate}
+\end{enumerate}
+\subsection*{Exercise 15.12}
+Similar in nature to Exercise 14.6.
+\subsection{Extra questions}
+\subsubsection*{Exercise 14.4}
+Consider FOL with only relations (ie:- no functions, and no constants in particular) and \textbf{no} quantifiers.\\
+Then this restricted FOL is equivalent to PL, where the propositional variables in our PL are of the form $P(x_1, x_2, \ldots, x_n)$ or $x_i = x_j$ where $x_i$s are FOL variables and $n$ is the arity of $P$. The $\top, \bot$ of FOL carry over as it is to PL.\\
+For example, the FOL formula $F:= (P(x, y)\wedge P(x, z))\implies (y = z)$ translates to $(\alpha\wedge\beta)\Rightarrow\gamma$, where $\alpha, \beta, \gamma$ are PL variables representing $P(x, y), P(x, z)$ and $y = z$ respectively. \\
+Finally, note that the model $m := (\mathbb{N}; P_m/2)$ satisfies $F$, where $P_m(x, y)$ is defined to be ``Is $x = y^2$?''.
+
 \end{document}
